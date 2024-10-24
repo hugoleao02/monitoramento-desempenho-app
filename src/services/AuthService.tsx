@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://localhost:8080/api/auth'; 
+const API_URL = "http://localhost:8080/api/auth";
 
 interface IRegister {
   email: string;
@@ -20,13 +20,9 @@ const login = async ({ email, password }: ILogin) => {
       password,
     });
 
-    if (response.data.token) {
-      localStorage.setItem('user', JSON.stringify(response.data)); 
-    }
-
     return response.data;
   } catch (error) {
-    throw new Error('Falha ao realizar login');
+    throw new Error("Falha ao realizar login");
   }
 };
 
@@ -40,7 +36,7 @@ const register = async ({ email, name, password }: IRegister) => {
 
     return response.data;
   } catch (error) {
-    throw new Error('Falha ao realizar registro');
+    throw new Error("Falha ao realizar registro");
   }
 };
 

@@ -1,18 +1,18 @@
 // src/components/auth/Login.tsx
-import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
-import LoginForm from './LoginForm';
-import LoginSnackbar from './LoginSnackbar';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Grafico from './Grafico';
-import { useNavigate } from 'react-router-dom'; // Importa o useNavigate
+import React, { useState } from "react";
+import { Box, Typography } from "@mui/material";
+import LoginForm from "./LoginForm";
+import LoginSnackbar from "./LoginSnackbar";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Grafico from "./Grafico";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
       fontWeight: 500,
-      letterSpacing: '0.1em',
+      letterSpacing: "0.1em",
     },
     body1: {
       fontWeight: 400,
@@ -22,39 +22,41 @@ const theme = createTheme({
 
 const Login: React.FC = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
 
-  const navigate = useNavigate(); // Inicializa o useNavigate
+  const navigate = useNavigate();
 
   const handleLoginSuccess = () => {
-    navigate('/home'); // Redireciona para a tela home após login bem-sucedido
+    navigate("/home");
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Box
         sx={{
-          display: 'flex',
-          height: '100vh',
-          backgroundColor: '#f0f2f5',
+          display: "flex",
+          height: "100vh",
+          backgroundColor: "#f0f2f5",
         }}
       >
         <Box
           sx={{
             flex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#3f51b5',
-            color: 'white',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#3f51b5",
+            color: "white",
             padding: 4,
-            flexDirection: 'column',
-            textAlign: 'center',
+            flexDirection: "column",
+            textAlign: "center",
           }}
         >
           <Typography variant="h4" component="h1">
@@ -64,42 +66,42 @@ const Login: React.FC = () => {
             Gerencie seu desempenho de maneira eficaz.
           </Typography>
         </Box>
-        
+
         <Box
           sx={{
             flex: 1,
-            display: 'flex',
+            display: "flex",
             alignItems: "center",
-            justifyContent: 'center',
+            justifyContent: "center",
             padding: 4,
           }}
         >
-          <LoginForm 
-            setOpenSnackbar={setOpenSnackbar} 
-            setSnackbarMessage={setSnackbarMessage} 
-            setSnackbarSeverity={setSnackbarSeverity} 
-            onLoginSuccess={handleLoginSuccess} 
+          <LoginForm
+            setOpenSnackbar={setOpenSnackbar}
+            setSnackbarMessage={setSnackbarMessage}
+            setSnackbarSeverity={setSnackbarSeverity}
+            onLoginSuccess={handleLoginSuccess}
           />
         </Box>
 
         <Box
           sx={{
             flex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
             padding: 4,
           }}
         >
           <Grafico />
         </Box>
 
-        <LoginSnackbar 
-          open={openSnackbar} 
-          onClose={handleCloseSnackbar} 
-          message={snackbarMessage} 
-          severity={snackbarSeverity} 
+        <LoginSnackbar
+          open={openSnackbar}
+          onClose={handleCloseSnackbar}
+          message={snackbarMessage}
+          severity={snackbarSeverity}
         />
       </Box>
     </ThemeProvider>
