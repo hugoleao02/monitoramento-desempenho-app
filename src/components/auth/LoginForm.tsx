@@ -9,9 +9,15 @@ interface LoginFormProps {
   setOpenSnackbar: (open: boolean) => void;
   setSnackbarMessage: (message: string) => void;
   setSnackbarSeverity: (severity: 'success' | 'error') => void;
+  onLoginSuccess: () => void; 
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ setOpenSnackbar, setSnackbarMessage, setSnackbarSeverity }) => {
+const LoginForm: React.FC<LoginFormProps> = ({
+  setOpenSnackbar,
+  setSnackbarMessage,
+  setSnackbarSeverity,
+  onLoginSuccess, 
+}) => {
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -22,9 +28,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ setOpenSnackbar, setSnackbarMessa
       setSubmitting(true);
       try {
         const response = await AuthService.login(values);
-        console.log('Login bem-sucedido:', response);
-        setSnackbarMessage('Login realizado com sucesso!');
+        localStorage.setItem('token', response.token);
         setSnackbarSeverity('success');
+        onLoginSuccess(); 
       } catch (error) {
         setErrors({ password: 'E-mail ou senha incorretos' });
         setSnackbarMessage('E-mail ou senha incorretos');
@@ -36,7 +42,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ setOpenSnackbar, setSnackbarMessa
   });
 
   return (
-    <Paper elevation={3} sx={{ padding: 4, width: '500px' }}> 
+    <Paper elevation={3} sx={{ padding: 4, width: '400px' }}> 
       <Typography variant="h5" component="h2" gutterBottom>
         Login
       </Typography>

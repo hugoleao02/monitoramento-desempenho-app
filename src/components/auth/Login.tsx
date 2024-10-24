@@ -5,14 +5,14 @@ import LoginForm from './LoginForm';
 import LoginSnackbar from './LoginSnackbar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Grafico from './Grafico';
+import { useNavigate } from 'react-router-dom'; // Importa o useNavigate
 
-// Tema personalizado com a fonte Roboto
 const theme = createTheme({
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
       fontWeight: 500,
-      letterSpacing: '0.1em', // Adiciona espaçamento entre letras para um look moderno
+      letterSpacing: '0.1em',
     },
     body1: {
       fontWeight: 400,
@@ -29,6 +29,12 @@ const Login: React.FC = () => {
     setOpenSnackbar(false);
   };
 
+  const navigate = useNavigate(); // Inicializa o useNavigate
+
+  const handleLoginSuccess = () => {
+    navigate('/home'); // Redireciona para a tela home após login bem-sucedido
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -38,7 +44,6 @@ const Login: React.FC = () => {
           backgroundColor: '#f0f2f5',
         }}
       >
-        {/* Seção de Texto */}
         <Box
           sx={{
             flex: 1,
@@ -73,6 +78,7 @@ const Login: React.FC = () => {
             setOpenSnackbar={setOpenSnackbar} 
             setSnackbarMessage={setSnackbarMessage} 
             setSnackbarSeverity={setSnackbarSeverity} 
+            onLoginSuccess={handleLoginSuccess} 
           />
         </Box>
 
@@ -86,7 +92,7 @@ const Login: React.FC = () => {
             padding: 4,
           }}
         >
-         <Grafico />
+          <Grafico />
         </Box>
 
         <LoginSnackbar 
