@@ -34,14 +34,14 @@ const LoginForm: React.FC<LoginFormProps> = ({
         setSnackbarMessage("E-mail ou senha incorretos");
         setSnackbarSeverity("error");
       } finally {
-        setOpenSnackbar(true); // Exibe a snackbar
-        setSubmitting(false); // Indica que a submissão foi concluída
+        setOpenSnackbar(true);
+        setSubmitting(false);
       }
     },
   });
 
   return (
-    <Paper elevation={3} sx={{ padding: 4, width: "400px" }}>
+    <Paper elevation={3} className="p-6 w-96 shadow-lg rounded-lg">
       <Typography variant="h5" component="h2" gutterBottom>
         Login
       </Typography>
@@ -65,8 +65,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
           {...formik.getFieldProps("password")}
           placeholder="Digite sua senha"
           variant="outlined"
-          error={!!formik.errors.password} // Exibe erro se existir
-          helperText={formik.errors.password} // Mensagem de erro
+          error={!!formik.errors.password}
+          helperText={formik.errors.password}
         />
         <Button
           type="submit"
@@ -74,6 +74,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           color="primary"
           fullWidth
           disabled={formik.isSubmitting}
+          className="mt-4"
         >
           {formik.isSubmitting ? "Entrando..." : "Entrar"}
         </Button>

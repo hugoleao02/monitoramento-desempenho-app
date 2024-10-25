@@ -1,4 +1,3 @@
-// src/components/auth/Login.tsx
 import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import LoginForm from "./LoginForm";
@@ -39,43 +38,14 @@ const Login: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box
-        sx={{
-          display: "flex",
-          height: "100vh",
-          backgroundColor: "#f0f2f5",
-        }}
-      >
-        <Box
-          sx={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#3f51b5",
-            color: "white",
-            padding: 4,
-            flexDirection: "column",
-            textAlign: "center",
-          }}
-        >
+      <Box className="flex h-screen bg-gray-100">
+        <Box className="flex-1 flex items-center justify-center bg-indigo-600 text-white p-8 text-center">
           <Typography variant="h4" component="h1">
             Sistema de Monitoramento de Desempenho (BI)
           </Typography>
-          <Typography variant="body1" component="p" sx={{ marginTop: 2 }}>
-            Gerencie seu desempenho de maneira eficaz.
-          </Typography>
         </Box>
 
-        <Box
-          sx={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 4,
-          }}
-        >
+        <Box className="flex-1 flex items-center justify-center p-4">
           <LoginForm
             setOpenSnackbar={setOpenSnackbar}
             setSnackbarMessage={setSnackbarMessage}
@@ -84,16 +54,7 @@ const Login: React.FC = () => {
           />
         </Box>
 
-        <Box
-          sx={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-            padding: 4,
-          }}
-        >
+        <Box className="flex-1 flex items-center justify-center p-4">
           <Grafico />
         </Box>
 
