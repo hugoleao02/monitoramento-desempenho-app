@@ -1,5 +1,5 @@
 import axios from "axios";
-import { jwtDecode } from "jwt-decode"; // Corrigido para usar importação correta
+import { jwtDecode } from "jwt-decode";
 
 const API_URL = "http://localhost:8080/api/auth";
 
@@ -21,7 +21,6 @@ const login = async ({ email, password }: ILogin) => {
       password,
     });
     localStorage.setItem("token", response.data.token);
-    console.log("Token recebido:", response.data.token);
     jwtDecode(response.data.token);
     return response.data;
   } catch (error) {

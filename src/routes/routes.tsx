@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,14 +12,7 @@ import ProtectedRoute from "../ProtectedRoute";
 import Layout from "../layouts/Layout";
 
 const AppRoutes: React.FC = () => {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
-  );
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken);
-  }, []);
+  const token = localStorage.getItem("token");
 
   const routes = [
     { path: "/login", element: <LoginPage />, protected: false },
@@ -33,26 +26,27 @@ const AppRoutes: React.FC = () => {
 
   return (
     <Router>
-      <Layout>
-        <Routes>
-          {routes.map(({ path, element, protected: isProtected }) => {
-            if (isProtected) {
-              return (
-                <Route
-                  key={path}
-                  path={path}
-                  element={<ProtectedRoute>{element}</ProtectedRoute>}
-                />
-              );
-            }
-            return <Route key={path} path={path} element={element} />;
-          })}
+      <Routes>
+        {routes.map(({ path, element, protected: isProtected }) => (
           <Route
-            path="*"
-            element={token ? <Navigate to="/home" /> : <Navigate to="/login" />}
+            key={path}
+            path={path}
+            element={
+              isProtected ? (
+                <ProtectedRoute token={token}>
+                  <Layout>{element}</Layout>
+                </ProtectedRoute>
+              ) : (
+                element
+              )
+            }
           />
-        </Routes>
-      </Layout>
+        ))}
+        <Route
+          path="*"
+          element={<Navigate to={token ? "/home" : "/login"} />}
+        />
+      </Routes>
     </Router>
   );
 };

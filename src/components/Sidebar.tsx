@@ -31,7 +31,7 @@ const Sidebar: React.FC = () => {
             { text: "Gerar Relatório", path: "/generate-report" },
             { text: "Configurações de Alerta", path: "/alert-settings" },
             { text: "Gerenciar Usuários", path: "/user-management" },
-            { text: "Logout", path: "/login" }, // Redireciona para a página de login
+            { text: "Logout", path: "/login" },
           ].map((item) => (
             <ListItem
               key={item.text}
@@ -39,16 +39,13 @@ const Sidebar: React.FC = () => {
               to={item.path}
               sx={{
                 cursor: "pointer",
-                color: "white", // Garante que o texto seja branco
+                color: "white",
                 "&:hover": {
-                  backgroundColor: "#1565c0", // Cor de fundo ao passar o mouse
+                  backgroundColor: "#1565c0",
                 },
               }}
             >
-              <ListItemText
-                primary={item.text}
-                sx={{ color: "inherit" }} // Usa 'inherit' para herdar a cor branca
-              />
+              <ListItemText primary={item.text} sx={{ color: "inherit" }} />
             </ListItem>
           ))}
         </List>

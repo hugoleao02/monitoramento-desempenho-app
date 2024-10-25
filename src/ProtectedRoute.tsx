@@ -4,11 +4,10 @@ import { jwtDecode } from "jwt-decode";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  token: string | null;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const storedToken = localStorage.getItem("token");
-
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, token }) => {
   const isValidToken = (token: string | null): boolean => {
     if (!token || token.split(".").length !== 3) return false;
 
@@ -22,7 +21,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     }
   };
 
-  return isValidToken(storedToken) ? <>{children}</> : <Navigate to="/login" />;
+  return isValidToken(token) ? <>{children}</> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;
