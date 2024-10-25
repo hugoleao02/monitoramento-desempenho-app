@@ -1,6 +1,6 @@
 import React from "react";
-import { Box } from "@mui/material";
 import Sidebar from "../components/Sidebar";
+import { Box } from "@mui/material";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (

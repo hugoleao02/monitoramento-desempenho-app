@@ -1,30 +1,61 @@
 // src/pages/UserManagementPage/UserManagementPage.tsx
 import React, { useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import UserTable from "./UserTable";
-import EditUserModal from "./EditUserModal";
+import UserForm from "./UserForm";
+
+interface User {
+  id?: number;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+}
 
 const UserManagementPage: React.FC = () => {
-  const [open, setOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [showForm, setShowForm] = useState(false);
 
-  const handleEdit = (user: any) => {
-    setSelectedUser(user);
-    setOpen(true);
+  const handleAddUser = () => {
+    setSelectedUser(null);
+    setShowForm(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedUser(null);
+  const handleEditUser = (user: User) => {
+    setSelectedUser(user);
+    setShowForm(true);
+  };
+
+  const handleFormSubmit = (userData: User) => {
+    if (selectedUser) {
+      setUsers(
+        users.map((user) =>
+          user.id === selectedUser.id ? { ...user, ...userData } : user
+        )
+      );
+    } else {
+      setUsers([...users, { ...userData, id: users.length + 1 }]);
+    }
+    setShowForm(false);
   };
 
   return (
-    <Box sx={{ padding: 4 }}>
+    <Box p={3}>
       <Typography variant="h4" gutterBottom>
         Gerenciamento de Usuários
       </Typography>
-      <UserTable onEdit={handleEdit} />
-      <EditUserModal open={open} onClose={handleClose} user={selectedUser} />
+      <Button variant="contained" color="primary" onClick={handleAddUser}>
+        Adicionar Usuário
+      </Button>
+      {showForm ? (
+        <UserForm
+          initialData={selectedUser || undefined}
+          onSubmit={handleFormSubmit}
+        />
+      ) : (
+        <UserTable users={users} onEdit={handleEditUser} />
+      )}
     </Box>
   );
 };

@@ -1,9 +1,17 @@
 // src/pages/UserManagementPage/UserTable.tsx
-import React from 'react';
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import React from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  IconButton,
+} from "@mui/material";
+import { Edit } from "@mui/icons-material";
 
 interface User {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   role: string;
@@ -11,54 +19,38 @@ interface User {
 }
 
 interface UserTableProps {
+  users: User[];
   onEdit: (user: User) => void;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ onEdit }) => {
-  const [filter, setFilter] = React.useState('');
-  const users: User[] = [
-    { id: 1, name: 'Usuário 1', email: 'usuario1@example.com', role: 'Administrador', status: 'Ativo' },
-    { id: 2, name: 'Usuário 2', email: 'usuario2@example.com', role: 'Usuário', status: 'Inativo' },
-  ];
-
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(filter.toLowerCase()) || 
-    user.email.toLowerCase().includes(filter.toLowerCase())
-  );
-
+const UserTable: React.FC<UserTableProps> = ({ users, onEdit }) => {
   return (
-    <TableContainer>
-      <TextField
-        variant="outlined"
-        label="Filtrar por nome ou e-mail"
-        onChange={(e) => setFilter(e.target.value)}
-        sx={{ marginBottom: 2 }}
-      />
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Nome</TableCell>
-            <TableCell>E-mail</TableCell>
-            <TableCell>Papel</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Ações</TableCell>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Nome</TableCell>
+          <TableCell>Email</TableCell>
+          <TableCell>Papel</TableCell>
+          <TableCell>Status</TableCell>
+          <TableCell>Ações</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {users.map((user) => (
+          <TableRow key={user.id}>
+            <TableCell>{user.name}</TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell>{user.role}</TableCell>
+            <TableCell>{user.status}</TableCell>
+            <TableCell>
+              <IconButton onClick={() => onEdit(user)}>
+                <Edit />
+              </IconButton>
+            </TableCell>
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {filteredUsers.map(user => (
-            <TableRow key={user.id}>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.role}</TableCell>
-              <TableCell>{user.status}</TableCell>
-              <TableCell>
-                <Button onClick={() => onEdit(user)}>Editar</Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 
