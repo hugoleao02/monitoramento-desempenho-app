@@ -1,8 +1,8 @@
 // src/pages/UserManagementPage/UserManagementPage.tsx
-import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
-import UserTable from './UserTable';
-import EditUserModal from './EditUserModal';
+import React, { useState } from "react";
+import { Box, Typography, Button } from "@mui/material";
+import UserTable from "./UserTable";
+import EditUserModal from "./EditUserModal";
 
 const UserManagementPage: React.FC = () => {
   const [open, setOpen] = useState(false);
