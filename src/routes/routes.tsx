@@ -39,20 +39,12 @@ const AppRoutes: React.FC = () => {
               <Route
                 key={path}
                 path={path}
-                element={
-                  <ProtectedRoute token={token}>{element}</ProtectedRoute>
-                }
+                element={<ProtectedRoute>{element}</ProtectedRoute>}
               />
             );
           }
-
           return <Route key={path} path={path} element={element} />;
         })}
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/home"
-          element={token ? <HomePage /> : <Navigate to="/login" />}
-        />
         <Route
           path="*"
           element={token ? <Navigate to="/home" /> : <Navigate to="/login" />}

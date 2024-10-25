@@ -26,10 +26,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       setSubmitting(true);
       try {
-        const token = await AuthService.login(values); // Aguarda o login
-        localStorage.setItem("token", token); // Armazena o token
+        await AuthService.login(values);
         setSnackbarSeverity("success");
-        onLoginSuccess(); // Chama a função de sucesso
+        onLoginSuccess();
       } catch (error) {
         setErrors({ password: "E-mail ou senha incorretos" });
         setSnackbarMessage("E-mail ou senha incorretos");
