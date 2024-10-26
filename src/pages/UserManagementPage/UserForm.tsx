@@ -1,20 +1,21 @@
-// src/pages/UserManagementPage/UserForm.tsx
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
   TextField,
   Select,
   MenuItem,
-  SelectChangeEvent,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
+import { Formik, Form, Field } from "formik";
 
 interface User {
-  id?: number;
+  id?: string;
   name: string;
   email: string;
+  active: boolean;
   role: string;
-  status: string;
 }
 
 interface UserFormProps {
@@ -23,69 +24,64 @@ interface UserFormProps {
 }
 
 const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit }) => {
-  const [formData, setFormData] = useState<User>(
-    initialData || { name: "", email: "", role: "User", status: "Active" }
-  );
-
-  // Handle changes for TextField components
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Handle changes for Select components
-  const handleSelectChange = (e: SelectChangeEvent) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
-
   return (
-    <Box component="form" onSubmit={handleSubmit} p={2}>
-      <TextField
-        label="Nome"
-        name="name"
-        value={formData.name}
-        onChange={handleInputChange} // Usando handleInputChange para TextField
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Email"
-        name="email"
-        value={formData.email}
-        onChange={handleInputChange} // Usando handleInputChange para TextField
-        fullWidth
-        margin="normal"
-      />
-      <Select
-        name="role"
-        value={formData.role}
-        onChange={handleSelectChange} // Usando handleSelectChange para Select
-        fullWidth
-        margin="dense" // Alterado para "dense"
-      >
-        <MenuItem value="Admin">Admin</MenuItem>
-        <MenuItem value="User">User</MenuItem>
-      </Select>
-      <Select
-        name="status"
-        value={formData.status}
-        onChange={handleSelectChange} // Usando handleSelectChange para Select
-        fullWidth
-        margin="dense" // Alterado para "dense"
-      >
-        <MenuItem value="Active">Ativo</MenuItem>
-        <MenuItem value="Inactive">Inativo</MenuItem>
-      </Select>
-      <Button type="submit" variant="contained" color="primary" fullWidth>
-        Salvar
-      </Button>
-    </Box>
+    <Formik
+      initialValues={
+        initialData || { name: "", email: "", role: "User", active: true }
+      }
+      onSubmit={(values) => onSubmit(values)}
+    >
+      {({ values, handleChange }) => (
+        <Form>
+          <Box p={2}>
+            <Field
+              as={TextField}
+              label="Nome"
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <Field
+              as={TextField}
+              label="Email"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <Field
+              as={Select}
+              name="role"
+              value={values.role}
+              onChange={handleChange}
+              fullWidth
+              margin="dense"
+            >
+              <MenuItem value="Admin">Admin</MenuItem>
+              <MenuItem value="User">User</MenuItem>
+            </Field>
+            <FormControlLabel
+              control={
+                <Field
+                  as={Checkbox}
+                  name="active"
+                  checked={values.active}
+                  onChange={handleChange}
+                  color="primary"
+                />
+              }
+              label="Ativo"
+            />
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Salvar
+            </Button>
+          </Box>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

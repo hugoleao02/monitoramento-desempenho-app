@@ -1,11 +1,7 @@
 import React from "react";
 import { Box, Typography, Grid, Paper } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import Sidebar from "../../components/Sidebar";
 
 const HomePage: React.FC = () => {
-  const navigate = useNavigate();
-
   return (
     <Box className="flex h-screen">
       <Box className="flex-grow p-4 bg-gray-100 overflow-auto">

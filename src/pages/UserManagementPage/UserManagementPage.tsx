@@ -1,21 +1,28 @@
 // src/pages/UserManagementPage/UserManagementPage.tsx
-import React, { useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Button, Typography, Snackbar, Alert } from "@mui/material";
 import UserTable from "./UserTable";
 import UserForm from "./UserForm";
-
-interface User {
-  id?: number;
-  name: string;
-  email: string;
-  role: string;
-  status: string;
-}
+import UserService, { User } from "../../services/UserService";
 
 const UserManagementPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("Fetching users..."); // Adicione este log
+      try {
+        const fetchedUsers = await UserService.fetchUsers();
+        setUsers(fetchedUsers);
+      } catch (error) {
+        setError("Erro ao buscar usuários");
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleAddUser = () => {
     setSelectedUser(null);
@@ -27,17 +34,23 @@ const UserManagementPage: React.FC = () => {
     setShowForm(true);
   };
 
-  const handleFormSubmit = (userData: User) => {
-    if (selectedUser) {
-      setUsers(
-        users.map((user) =>
-          user.id === selectedUser.id ? { ...user, ...userData } : user
-        )
-      );
-    } else {
-      setUsers([...users, { ...userData, id: users.length + 1 }]);
+  const handleFormSubmit = async (userData: User) => {
+    try {
+      if (selectedUser) {
+        await UserService.updateUser(selectedUser.id!, userData);
+        setUsers(
+          users.map((user) =>
+            user.id === selectedUser.id ? { ...user, ...userData } : user
+          )
+        );
+      } else {
+        const newUser = await UserService.createUser(userData);
+        setUsers([...users, newUser]);
+      }
+      setShowForm(false);
+    } catch (error) {
+      setError("Erro ao criar ou atualizar usuário");
     }
-    setShowForm(false);
   };
 
   return (
@@ -56,6 +69,15 @@ const UserManagementPage: React.FC = () => {
       ) : (
         <UserTable users={users} onEdit={handleEditUser} />
       )}
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={() => setError(null)}
+      >
+        <Alert severity="error" onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

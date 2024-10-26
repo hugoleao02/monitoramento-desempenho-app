@@ -11,11 +11,11 @@ import {
 import { Edit } from "@mui/icons-material";
 
 interface User {
-  id?: number;
+  id?: string;
   name: string;
   email: string;
+  active: boolean;
   role: string;
-  status: string;
 }
 
 interface UserTableProps {
@@ -23,35 +23,33 @@ interface UserTableProps {
   onEdit: (user: User) => void;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users, onEdit }) => {
-  return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Nome</TableCell>
-          <TableCell>Email</TableCell>
-          <TableCell>Papel</TableCell>
-          <TableCell>Status</TableCell>
-          <TableCell>Ações</TableCell>
+const UserTable: React.FC<UserTableProps> = ({ users, onEdit }) => (
+  <Table>
+    <TableHead>
+      <TableRow>
+        <TableCell>Nome</TableCell>
+        <TableCell>Email</TableCell>
+        <TableCell>Papel</TableCell>
+        <TableCell>Status</TableCell>
+        <TableCell>Ações</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {users.map((user) => (
+        <TableRow key={user.id}>
+          <TableCell>{user.name}</TableCell>
+          <TableCell>{user.email}</TableCell>
+          <TableCell>{user.role}</TableCell>
+          <TableCell>{user.active ? "Ativo" : "Inativo"}</TableCell>
+          <TableCell>
+            <IconButton onClick={() => onEdit(user)}>
+              <Edit />
+            </IconButton>
+          </TableCell>
         </TableRow>
-      </TableHead>
-      <TableBody>
-        {users.map((user) => (
-          <TableRow key={user.id}>
-            <TableCell>{user.name}</TableCell>
-            <TableCell>{user.email}</TableCell>
-            <TableCell>{user.role}</TableCell>
-            <TableCell>{user.status}</TableCell>
-            <TableCell>
-              <IconButton onClick={() => onEdit(user)}>
-                <Edit />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-};
+      ))}
+    </TableBody>
+  </Table>
+);
 
 export default UserTable;

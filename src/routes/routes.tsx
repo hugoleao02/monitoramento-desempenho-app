@@ -1,4 +1,5 @@
-import React from "react";
+// src/routes/AppRoutes.tsx
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,11 +9,21 @@ import {
 import LoginPage from "../pages/LoginPage/LoginPage";
 import HomePage from "../pages/home/HomePage";
 import UserManagementPage from "../pages/UserManagementPage/UserManagementPage";
-import ProtectedRoute from "../ProtectedRoute";
 import Layout from "../layouts/Layout";
+import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes: React.FC = () => {
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
+
+  useEffect(() => {
+    const handleTokenChange = () => {
+      setToken(localStorage.getItem("token"));
+    };
+    window.addEventListener("storage", handleTokenChange);
+    return () => window.removeEventListener("storage", handleTokenChange);
+  }, []);
 
   const routes = [
     { path: "/login", element: <LoginPage />, protected: false },
