@@ -3,6 +3,7 @@ import { Button, TextField, Typography, Paper } from "@mui/material";
 import { useFormik } from "formik";
 import AuthService from "../../services/AuthService";
 import AuthValidation from "./AuthValidation";
+import { useAuth } from "../../provider/AuthProvider";
 
 interface LoginFormProps {
   setOpenSnackbar: (open: boolean) => void;
@@ -17,6 +18,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
   setSnackbarSeverity,
   onLoginSuccess,
 }) => {
+  const { setToken } = useAuth();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -26,7 +29,10 @@ const LoginForm: React.FC<LoginFormProps> = ({
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       setSubmitting(true);
       try {
-        await AuthService.login(values);
+        await AuthService.login(
+          { email: values.email, password: values.password },
+          setToken
+        );
         setSnackbarSeverity("success");
         onLoginSuccess();
       } catch (error) {

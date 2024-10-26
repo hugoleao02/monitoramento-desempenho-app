@@ -1,5 +1,5 @@
 // src/routes/AppRoutes.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,19 +11,10 @@ import HomePage from "../pages/home/HomePage";
 import UserManagementPage from "../pages/UserManagementPage/UserManagementPage";
 import Layout from "../layouts/Layout";
 import ProtectedRoute from "./ProtectedRoute";
+import { useAuth } from "../provider/AuthProvider";
 
 const AppRoutes: React.FC = () => {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
-  );
-
-  useEffect(() => {
-    const handleTokenChange = () => {
-      setToken(localStorage.getItem("token"));
-    };
-    window.addEventListener("storage", handleTokenChange);
-    return () => window.removeEventListener("storage", handleTokenChange);
-  }, []);
+  const { token } = useAuth();
 
   const routes = [
     { path: "/login", element: <LoginPage />, protected: false },
@@ -44,7 +35,7 @@ const AppRoutes: React.FC = () => {
             path={path}
             element={
               isProtected ? (
-                <ProtectedRoute token={token}>
+                <ProtectedRoute>
                   <Layout>{element}</Layout>
                 </ProtectedRoute>
               ) : (

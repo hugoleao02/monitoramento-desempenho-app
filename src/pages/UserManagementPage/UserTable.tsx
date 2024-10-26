@@ -9,14 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
-
-interface User {
-  id?: string;
-  name: string;
-  email: string;
-  active: boolean;
-  role: string;
-}
+import { User } from "../../interfaces/User";
 
 interface UserTableProps {
   users: User[];

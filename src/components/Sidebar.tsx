@@ -19,10 +19,11 @@ import {
   People,
   AccountCircle,
 } from "@mui/icons-material";
+import { useAuth } from "../provider/AuthProvider";
 
 const Sidebar: React.FC = () => {
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
-
+  const { logout } = useAuth();
   const toggleProfileMenu = () => {
     setOpenProfileMenu((prev) => !prev);
   };
@@ -119,7 +120,11 @@ const Sidebar: React.FC = () => {
                   },
                 }}
               >
-                <ListItemText primary="Logout" sx={{ color: "inherit" }} />
+                <ListItemText
+                  primary="Logout"
+                  sx={{ color: "inherit" }}
+                  onClick={logout}
+                />
               </ListItem>
             </List>
           </Collapse>

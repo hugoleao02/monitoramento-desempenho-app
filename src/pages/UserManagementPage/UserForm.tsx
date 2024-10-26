@@ -9,14 +9,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import { Formik, Form, Field } from "formik";
-
-interface User {
-  id?: string;
-  name: string;
-  email: string;
-  active: boolean;
-  role: string;
-}
+import { User } from "../../interfaces/User";
 
 interface UserFormProps {
   initialData?: User;

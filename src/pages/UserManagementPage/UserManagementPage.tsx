@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Box, Button, Typography, Snackbar, Alert } from "@mui/material";
 import UserTable from "./UserTable";
 import UserForm from "./UserForm";
-import UserService, { User } from "../../services/UserService";
+import UserService from "../../services/UserService";
+import { User } from "../../interfaces/User";
 
 const UserManagementPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -13,7 +14,6 @@ const UserManagementPage: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Fetching users..."); // Adicione este log
       try {
         const fetchedUsers = await UserService.fetchUsers();
         setUsers(fetchedUsers);

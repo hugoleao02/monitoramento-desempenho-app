@@ -1,14 +1,16 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../provider/AuthProvider";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  token: string | null;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, token }) => {
-  const isValidToken = (token: string | null): boolean => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+  const { token } = useAuth();
+
+  const isValidToken = () => {
     if (!token || token.split(".").length !== 3) return false;
 
     try {
@@ -21,7 +23,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, token }) => {
     }
   };
 
-  return isValidToken(token) ? <>{children}</> : <Navigate to="/login" />;
+  return isValidToken() ? <>{children}</> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;

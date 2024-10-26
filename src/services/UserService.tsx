@@ -1,74 +1,48 @@
+// src/services/UserService.ts
 import axios from "axios";
+import { User } from "../interfaces/User";
 
 const API_URL = "http://localhost:8080/api/user";
-const token = localStorage.getItem("token");
 
-export interface User {
-  id?: string;
-  name: string;
-  email: string;
-  active: boolean;
-  role: string;
-}
-
-export const fetchUsers = async (): Promise<User[]> => {
-  try {
-    console.log(token);
-    const response = await axios.get<User[]>(`${API_URL}/all`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    handleError(error, "Erro ao buscar usuários");
-    throw error;
-  }
-};
-
-export const createUser = async (userData: User): Promise<User> => {
-  try {
-    if (!token) {
-      throw new Error("Token de autenticação não encontrado");
+const UserService = {
+  fetchUsers: async (): Promise<User[]> => {
+    try {
+      const response = await axios.get<User[]>(`${API_URL}/all`);
+      return response.data;
+    } catch (error) {
+      handleError(error, "Erro ao buscar usuários");
+      throw error;
     }
+  },
 
-    const response = await axios.post<User>(`${API_URL}/create`, userData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    handleError(error, "Erro ao criar usuário");
-    throw error;
-  }
-};
+  createUser: async (userData: User): Promise<User> => {
+    try {
+      const response = await axios.post<User>(`${API_URL}/create`, userData);
+      return response.data;
+    } catch (error) {
+      handleError(error, "Erro ao criar usuário");
+      throw error;
+    }
+  },
 
-export const updateUser = async (id: string, userData: User): Promise<User> => {
-  try {
-    const response = await axios.put<User>(`${API_URL}/${id}`, userData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    handleError(error, "Erro ao atualizar usuário");
-    throw error;
-  }
-};
+  updateUser: async (id: string, userData: User): Promise<User> => {
+    try {
+      const response = await axios.put<User>(`${API_URL}/${id}`, userData);
+      return response.data;
+    } catch (error) {
+      handleError(error, "Erro ao atualizar usuário");
+      throw error;
+    }
+  },
 
-export const deleteUser = async (id: string): Promise<void> => {
-  try {
-    await axios.delete(`${API_URL}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  } catch (error) {
-    handleError(error, "Erro ao excluir usuário");
-    throw error;
-  }
+  deleteUser: async (id: string): Promise<void> => {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+    } catch (error) {
+      handleError(error, "Erro ao excluir usuário");
+      throw error;
+    }
+  },
 };
 
 const handleError = (error: unknown, customMessage: string) => {
@@ -77,13 +51,6 @@ const handleError = (error: unknown, customMessage: string) => {
   } else {
     console.error(customMessage, error);
   }
-};
-
-const UserService = {
-  fetchUsers,
-  createUser,
-  updateUser,
-  deleteUser,
 };
 
 export default UserService;
