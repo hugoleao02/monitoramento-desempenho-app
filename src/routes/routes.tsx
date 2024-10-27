@@ -1,11 +1,5 @@
-// src/routes/AppRoutes.tsx
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import HomePage from "../pages/home/HomePage";
 import UserManagementPage from "../pages/UserManagementPage/UserManagementPage";
@@ -18,38 +12,32 @@ const AppRoutes: React.FC = () => {
 
   const routes = [
     { path: "/login", element: <LoginPage />, protected: false },
-    { path: "/home", element: <HomePage />, protected: true },
+    { path: "/home", element: <HomePage /> },
     {
       path: "/user-management",
       element: <UserManagementPage />,
-      protected: true,
     },
   ];
 
   return (
-    <Router>
-      <Routes>
-        {routes.map(({ path, element, protected: isProtected }) => (
-          <Route
-            key={path}
-            path={path}
-            element={
-              isProtected ? (
-                <ProtectedRoute>
-                  <Layout>{element}</Layout>
-                </ProtectedRoute>
-              ) : (
-                element
-              )
-            }
-          />
-        ))}
+    <Routes>
+      {routes.map(({ path, element, protected: isProtected = true }) => (
         <Route
-          path="*"
-          element={<Navigate to={token ? "/home" : "/login"} />}
+          key={path}
+          path={path}
+          element={
+            isProtected ? (
+              <ProtectedRoute>
+                <Layout>{element}</Layout>
+              </ProtectedRoute>
+            ) : (
+              element
+            )
+          }
         />
-      </Routes>
-    </Router>
+      ))}
+      <Route path="*" element={<Navigate to={token ? "/home" : "/login"} />} />
+    </Routes>
   );
 };
 

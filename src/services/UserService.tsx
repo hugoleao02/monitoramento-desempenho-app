@@ -1,4 +1,3 @@
-// src/services/UserService.ts
 import axios from "axios";
 import { User } from "../interfaces/User";
 
@@ -40,6 +39,17 @@ const UserService = {
       await axios.delete(`${API_URL}/${id}`);
     } catch (error) {
       handleError(error, "Erro ao excluir usuário");
+      throw error;
+    }
+  },
+
+  // Adicionando a função getUserById
+  getUserById: async (id: string): Promise<User> => {
+    try {
+      const response = await axios.get<User>(`${API_URL}/${id}`);
+      return response.data;
+    } catch (error) {
+      handleError(error, "Erro ao buscar usuário por ID");
       throw error;
     }
   },

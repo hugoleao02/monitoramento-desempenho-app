@@ -18,7 +18,6 @@ const AuthService = {
     setToken: (token: string | null) => void
   ) => {
     try {
-      console.log(email);
       const response = await axios.post(`${API_URL}/login`, {
         email,
         password,
