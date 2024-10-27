@@ -1,4 +1,3 @@
-// src/provider/AuthProvider.tsx
 import axios from "axios";
 import {
   createContext,
