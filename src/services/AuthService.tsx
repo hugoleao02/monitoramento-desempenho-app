@@ -1,5 +1,4 @@
-import axios from "axios";
-const API_URL = "http://localhost:8080/api/auth";
+import api from "./api";
 
 interface IRegister {
   email: string;
@@ -18,10 +17,7 @@ const AuthService = {
     setToken: (token: string | null) => void
   ) => {
     try {
-      const response = await axios.post(`${API_URL}/login`, {
-        email,
-        password,
-      });
+      const response = await api.post("/auth/login", { email, password });
       const token = response.data.token;
       setToken(token);
       return response.data;
@@ -32,7 +28,7 @@ const AuthService = {
 
   register: async ({ email, name, password }: IRegister) => {
     try {
-      const response = await axios.post(`${API_URL}/register`, {
+      const response = await api.post("/auth/register", {
         email,
         name,
         password,

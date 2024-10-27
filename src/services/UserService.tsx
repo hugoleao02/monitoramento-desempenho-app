@@ -1,12 +1,10 @@
-import axios from "axios";
+import api, { handleError } from "./api";
 import { User } from "../interfaces/User";
-
-const API_URL = "http://localhost:8080/api/user";
 
 const UserService = {
   fetchUsers: async (): Promise<User[]> => {
     try {
-      const response = await axios.get<User[]>(`${API_URL}/all`);
+      const response = await api.get<User[]>("/user/all");
       return response.data;
     } catch (error) {
       handleError(error, "Erro ao buscar usuários");
@@ -16,7 +14,7 @@ const UserService = {
 
   createUser: async (userData: User): Promise<User> => {
     try {
-      const response = await axios.post<User>(`${API_URL}/create`, userData);
+      const response = await api.post<User>("/user/create", userData);
       return response.data;
     } catch (error) {
       handleError(error, "Erro ao criar usuário");
@@ -26,7 +24,7 @@ const UserService = {
 
   updateUser: async (id: string, userData: User): Promise<User> => {
     try {
-      const response = await axios.put<User>(`${API_URL}/${id}`, userData);
+      const response = await api.put<User>(`/user/${id}`, userData);
       return response.data;
     } catch (error) {
       handleError(error, "Erro ao atualizar usuário");
@@ -36,31 +34,22 @@ const UserService = {
 
   deleteUser: async (id: string): Promise<void> => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await api.delete(`/user/${id}`);
     } catch (error) {
       handleError(error, "Erro ao excluir usuário");
       throw error;
     }
   },
 
-  // Adicionando a função getUserById
   getUserById: async (id: string): Promise<User> => {
     try {
-      const response = await axios.get<User>(`${API_URL}/${id}`);
+      const response = await api.get<User>(`/user/${id}`);
       return response.data;
     } catch (error) {
       handleError(error, "Erro ao buscar usuário por ID");
       throw error;
     }
   },
-};
-
-const handleError = (error: unknown, customMessage: string) => {
-  if (axios.isAxiosError(error)) {
-    console.error(customMessage, error.response?.data);
-  } else {
-    console.error(customMessage, error);
-  }
 };
 
 export default UserService;
